@@ -1,161 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>colony-kernel — models propose, only the kernel commits</title>
-<meta name="description" content="A deterministic mission-control kernel for AI-agent colonies. 22-stage state machine, content-addressed approvals, byte-identical replay. 67 offline tests, zero runtime dependencies." />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colony Kernel — Models propose. Only the kernel commits.</title>
+<meta name="description" content="Deterministic mission control for AI agent colonies: 67 offline tests, zero runtime dependencies, byte-identical replay. Your agents can't lie about passing QA.">
 <style>
-  :root{
-    --bg:#07090d; --panel:#0d1117; --panel2:#111823; --line:#1c2635;
-    --txt:#e6edf6; --dim:#8b98ab; --accent:#4ade80; --accent2:#38bdf8;
-    --mono:'JetBrains Mono',ui-monospace,monospace; --max:960px; --r:14px;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:radial-gradient(1000px 460px at 80% -10%,rgba(56,189,248,.10),transparent 60%),
-    radial-gradient(820px 400px at 10% 0%,rgba(74,222,128,.08),transparent 60%),var(--bg);
-    color:var(--txt);font-family:Inter,system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
-  a{color:var(--accent2);text-decoration:none} a:hover{text-decoration:underline}
-  code,kbd{font-family:var(--mono)}
-  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(7,9,13,.72);border-bottom:1px solid var(--line)}
-  nav .wrap{display:flex;align-items:center;gap:20px;height:58px}
-  .logo{font-weight:800;letter-spacing:-.02em;font-size:16px}
-  .logo span{color:var(--accent)} nav .links{margin-left:auto;display:flex;gap:20px;font-size:14px}
-  nav .links a{color:var(--dim)} nav .links a:hover{color:var(--txt);text-decoration:none}
-  header{padding:80px 0 48px;text-align:center}
-  .pill{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--accent);
-    background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.25);padding:6px 14px;border-radius:999px;margin-bottom:24px}
-  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
-  h1{font-size:clamp(30px,4.6vw,50px);line-height:1.1;letter-spacing:-.03em;font-weight:800;max-width:820px;margin:0 auto 16px}
-  h1 em{font-style:normal;background:linear-gradient(92deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .sub{color:var(--dim);font-size:17px;max-width:640px;margin:0 auto 26px}
-  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-  .btn{display:inline-block;padding:12px 24px;border-radius:10px;font-weight:600;font-size:14.5px;border:1px solid transparent;transition:transform .12s}
-  .btn:hover{text-decoration:none;transform:translateY(-1px)}
-  .btn-primary{background:linear-gradient(92deg,var(--accent),#22c55e);color:#06240f;box-shadow:0 8px 26px rgba(74,222,128,.25)}
-  .btn-ghost{border-color:var(--line);color:var(--txt);background:var(--panel)} .btn-ghost:hover{border-color:var(--accent2)}
-  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:44px 0 8px}
-  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;text-align:center}
-  .stat b{display:block;font-size:26px;letter-spacing:-.02em;color:var(--accent)}
-  .stat span{color:var(--dim);font-size:12.5px}
-  section{padding:56px 0}
-  .sec-title{font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);text-align:center;margin-bottom:24px}
-  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.grid2{grid-template-columns:1fr}}
-  .feat{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)} .feat:last-child{border-bottom:0}
-  .feat .ic{width:38px;height:38px;flex:0 0 38px;border-radius:10px;display:grid;place-items:center;background:var(--panel2);border:1px solid var(--line);font-size:18px}
-  .feat h3{font-size:15.5px;margin-bottom:3px} .feat p{color:var(--dim);font-size:14px}
-  .pre{background:#05070a;border:1px solid var(--line);border-radius:12px;padding:20px;overflow:auto;max-height:520px;
-    font-family:var(--mono);font-size:12.5px;line-height:1.55;color:#c9d5e4;white-space:pre}
-  .proofflex{display:grid;grid-template-columns:1fr 1fr;gap:16px} @media(max-width:760px){.proofflex{grid-template-columns:1fr}}
-  .proofok{border-color:rgba(74,222,128,.35)} .proofok h3{color:var(--accent)}
-  .hash{font-family:var(--mono);font-size:11.5px;color:var(--dim);word-break:break-all}
-  .steps{counter-reset:s;list-style:none;display:grid;gap:14px}
-  .steps li{counter-increment:s;display:flex;gap:14px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
-  .steps li::before{content:counter(s);flex:0 0 28px;height:28px;border-radius:50%;background:var(--panel2);border:1px solid var(--line);
-    display:grid;place-items:center;font-size:13px;font-weight:700;color:var(--accent)}
-  .steps code{background:var(--panel2);border:1px solid var(--line);padding:1px 7px;border-radius:6px;font-size:13px}
-  footer{border-top:1px solid var(--line);padding:28px 0;color:var(--dim);font-size:13px}
-  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  :root { --bg:#0b0f14; --panel:#121821; --ink:#e8edf2; --dim:#8b98a5; --acc:#4ade80; --acc2:#38bdf8; }
+  * { box-sizing:border-box; margin:0; padding:0 }
+  body { background:var(--bg); color:var(--ink); font:16px/1.6 -apple-system,"Segoe UI",Roboto,sans-serif; }
+  .wrap { max-width:980px; margin:0 auto; padding:0 24px }
+  header { padding:72px 0 40px }
+  h1 { font-size:clamp(28px,5vw,44px); line-height:1.15; letter-spacing:-.02em }
+  h1 em { color:var(--acc); font-style:normal }
+  .sub { color:var(--dim); font-size:19px; margin-top:16px; max-width:46em }
+  .cta { display:inline-block; margin-top:28px; background:var(--acc); color:#052012; font-weight:700; padding:14px 26px; border-radius:10px; text-decoration:none; font-size:17px }
+  .cta.ghost { background:transparent; color:var(--acc2); border:1px solid #22475e; margin-left:12px }
+  .badges { margin-top:20px; display:flex; gap:10px; flex-wrap:wrap }
+  .badge { background:var(--panel); border:1px solid #1f2937; color:var(--dim); font-size:13px; padding:6px 12px; border-radius:999px }
+  .badge b { color:var(--ink) }
+  section { padding:36px 0; border-top:1px solid #182130 }
+  h2 { font-size:24px; margin-bottom:18px; letter-spacing:-.01em }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px }
+  .card { background:var(--panel); border:1px solid #1f2937; border-radius:12px; padding:20px }
+  .card h3 { font-size:16px; margin-bottom:8px; color:var(--acc2) }
+  .card p { color:var(--dim); font-size:14.5px }
+  pre { background:#0a0e13; border:1px solid #1f2937; border-radius:12px; padding:18px; overflow-x:auto; font:13px/1.5 ui-monospace,Menlo,Consolas,monospace; color:#c9d6e2; white-space:pre }
+  .verify { color:var(--acc); font-weight:600 }
+  .audit { background:linear-gradient(180deg,#121821,#0e141c); border:1px solid #22405a; border-radius:16px; padding:28px; margin:8px 0 40px }
+  .audit h2 { margin-bottom:10px }
+  .audit p { color:var(--dim); margin-bottom:14px }
+  footer { padding:32px 0 64px; color:#54626f; font-size:14px; border-top:1px solid #182130; margin-top:24px }
+  footer a { color:var(--dim) }
+  code { background:var(--panel); padding:2px 7px; border-radius:6px; font-size:.9em }
 </style>
 </head>
 <body>
-<nav><div class="wrap">
-  <div class="logo">colony<span>.</span>kernel</div>
-  <div class="links">
-    <a href="#proof">Proof</a><a href="#features">How</a><a href="#try">Run it</a>
-    <a href="https://github.com/faresrafat3/colony-kernel">GitHub</a>
+<div class="wrap">
+
+<header>
+  <h1>Models propose.<br><em>Only the kernel commits.</em></h1>
+  <p class="sub">Colony Kernel is deterministic mission control for AI-agent colonies. Every state change, budget, and human approval flows through an auditable, fail-closed core — so an agent saying <i>“this passed”</i> is never treated as a verification result.</p>
+  <div class="badges">
+    <span class="badge"><b>67</b> offline tests</span>
+    <span class="badge"><b>0</b> runtime dependencies</span>
+    <span class="badge">replay: <b>byte-identical</b></span>
+    <span class="badge">Node <b>≥22</b> · MIT</span>
   </div>
-</div></nav>
+  <a class="cta" href="https://github.com/faresrafat3/colony-kernel">Get the source →</a>
+  <a class="cta ghost" href="#proof">See the proof</a>
+</header>
 
-<header><div class="wrap">
-  <div class="pill"><span class="dot"></span> 67 offline tests · 0 runtime dependencies · MIT</div>
-  <h1>Models propose. <em>Only the kernel commits.</em></h1>
-  <p class="sub">A deterministic mission-control kernel for AI-agent colonies. A run that
-  “worked” can be replayed byte-for-byte, and an agent claiming “tests passed” is never
-  treated as a verification result.</p>
-  <div class="cta">
-    <a class="btn btn-primary" href="https://github.com/faresrafat3/colony-kernel">View source</a>
-    <a class="btn btn-ghost" href="#proof">See the proof ↓</a>
+<section id="proof">
+  <h2>The proof, not the promise</h2>
+  <p style="color:var(--dim)">One seeded demo mission, run twice during publication. Two runs are <b>byte-identical</b> — that's the whole point. Below is the <b>complete, unedited output</b> of the run that shipped this page (also served raw as <a href="demo.json" style="color:var(--acc2)">demo.json</a>):</p>
+  <pre id="demo">loading demo.json …</pre>
+  <noscript><p style="color:var(--dim)">JavaScript is off — read the full run at <a href="demo.json" style="color:var(--acc2)">demo.json</a>.</p></noscript>
+  <p style="color:var(--dim);margin-top:14px">Reproduce it yourself, offline, in seconds:</p>
+<pre>git clone https://github.com/faresrafat3/colony-kernel &amp;&amp; cd colony-kernel
+npm install
+<span class="verify">npm run verify</span>   # typecheck + lint + 67 tests + demo twice, byte-identical
+npm run demo &gt; a.json; npm run demo &gt; b.json
+diff a.json b.json   # empty — byte-identical replay</pre>
+</section>
+
+<section>
+  <h2>What's inside</h2>
+  <div class="grid">
+    <div class="card"><h3>22-stage state machine</h3><p>Default-deny edge table — unlisted transitions are illegal, not “unlikely”. Legality precedes storage.</p></div>
+    <div class="card"><h3>Apply-once event reducer</h3><p>Accepted events carry canonical hash + CAS version + monotonic sequence. Replay reconstructs identical state.</p></div>
+    <div class="card"><h3>Content-addressed approvals</h3><p>SHA-256 over RFC 8785 JCS bytes, bound to the exact transition, consumed ≤1, expired at commit.</p></div>
+    <div class="card"><h3>Budget ledger</h3><p>Immutable limits with CAS rows — agents can't mint resources or vote themselves a raise.</p></div>
+    <div class="card"><h3>Deny-by-default roles</h3><p>No self-mutation, no self-publication. Reserved public states are structurally unreachable.</p></div>
+    <div class="card"><h3>Durable rejections</h3><p>Refused commands leave evidence and never mutate state. Audit trails don't have gaps.</p></div>
   </div>
-  <div class="stats">
-    <div class="stat"><b>22</b><span>stage state machine</span></div>
-    <div class="stat"><b>67</b><span>passing tests</span></div>
-    <div class="stat"><b>0</b><span>runtime deps</span></div>
-    <div class="stat"><b>byte</b><span>identical replay</span></div>
-  </div>
-</div></header>
+</section>
 
-<section id="proof"><div class="wrap">
-  <div class="sec-title">Proof, not a promise</div>
-  <div class="proofflex">
-    <div class="panel proofok">
-      <h3 style="font-size:16px;margin-bottom:10px">Determinism (verified)</h3>
-      <p style="color:var(--dim);font-size:14px;margin-bottom:12px">Two seeded runs of
-      <code style="font-size:13px">npm run demo</code>, hashed:</p>
-      <div class="hash" id="h1">262d937b98e9ce4460bef67132054ed7b9c320cb2031c63d5c1779819b02dc73</div>
-      <div class="hash" id="h2" style="margin-top:6px">262d937b98e9ce4460bef67132054ed7b9c320cb2031c63d5c1779819b02dc73</div>
-      <p style="color:var(--accent);font-size:13.5px;margin-top:12px">✓ byte-identical — the demo is reproducible, not asserted.</p>
-    </div>
-    <div class="panel">
-      <h3 style="font-size:16px;margin-bottom:10px">Why it matters</h3>
-      <p style="color:var(--dim);font-size:14px">Multi-agent frameworks let the model drive workflow
-      state — so the workflow is only as reliable as the model. Colony inverts the trust boundary:
-      the model <em>suggests</em>, and an audited, deterministic core <em>decides</em> what is real.
-      A model saying “this passed” is never the verification result — the kernel's gates are.</p>
-    </div>
-  </div>
-</div></section>
+<section>
+  <h2>The inversion</h2>
+  <p style="color:var(--dim)">Multi-agent frameworks let the LLM drive workflow state — so workflow is only as reliable as the model. Colony flips the trust boundary: models <i>suggest</i>, a deterministic kernel <i>decides</i>. Verification is proven by replayable evidence, not claimed by the model that wrote the code.</p>
+</section>
 
-<section><div class="wrap">
-  <div class="sec-title">A real run (seeded demo output)</div>
-  <div class="pre" id="demo">loading demo.json…</div>
-</div></section>
+<section class="audit">
+  <h2>Work with the author</h2>
+  <p><b style="color:var(--ink)">AI Agent Reliability Audit</b> — a fixed-scope engagement for teams shipping AI agents whose outputs they can't fully trust. I audit your agent loop with the same doctrine Colony Kernel is built on: evidence over claims, replay over narratives, fail-closed over fail-open. You get a written findings report and a re-test tier.</p>
+  <p>Colony Kernel <i>is</i> the proof of work for this offer.</p>
+  <a class="cta" href="mailto:faresrafat3@gmail.com?subject=AI%20Agent%20Reliability%20Audit">Book an audit — faresrafat3@gmail.com</a>
+</section>
 
-<section id="features"><div class="wrap">
-  <div class="sec-title">What it guarantees</div>
-  <div class="panel">
-    <div class="feat"><div class="ic">🔒</div><div><h3>Default-deny state machine</h3>
-      <p>22 stages with a single-truth edge table — any transition not listed is illegal. Illegal transitions are refused, not warned about.</p></div></div>
-    <div class="feat"><div class="ic">♻️</div><div><h3>Apply-once event reducer</h3>
-      <p>Accepted events carry a canonical hash, CAS version, and monotonic sequence. Replaying the log reconstructs identical state.</p></div></div>
-    <div class="feat"><div class="ic">✍️</div><div><h3>Content-addressed approvals</h3>
-      <p>Approvals are SHA-256 over RFC 8785 JCS bytes, bound to the exact transition, consumed at most once, and expired at commit — so an approval can't be forged or replayed.</p></div></div>
-    <div class="feat"><div class="ic">💰</div><div><h3>Budget ledger</h3>
-      <p>Immutable limits with CAS rows. Agents can't mint resources or top themselves up.</p></div></div>
-    <div class="feat"><div class="ic">🧱</div><div><h3>Deny-by-default roles</h3>
-      <p>No self-mutation, no publication by default; reserved public states are unreachable unless explicitly enabled.</p></div></div>
-    <div class="feat"><div class="ic">🧾</div><div><h3>Durable rejections</h3>
-      <p>A refused command leaves evidence and never mutates state — refusals are auditable, not silent.</p></div></div>
-  </div>
-</div></section>
+<footer>
+  Built by <a href="https://github.com/faresrafat3">Fares Rafat</a> · Cairo, Egypt ·
+  <a href="https://github.com/faresrafat3/colony-kernel">source</a> ·
+  <a href="https://github.com/faresrafat3/colony-kernel/releases/tag/v0.1.0">v0.1.0 release</a> ·
+  CI badge green on every push
+</footer>
 
-<section id="try"><div class="wrap">
-  <div class="sec-title">Run it yourself</div>
-  <ol class="steps">
-    <li>Clone and install: <code>git clone https://github.com/faresrafat3/colony-kernel && cd colony-kernel && npm install</code></li>
-    <li>Verify everything: <code>npm run verify</code> — typecheck, lint, 67 tests, byte-identical demo.</li>
-    <li>Prove determinism: <code>npm run demo &gt; a.json</code> twice, then <code>diff a.json b.json</code> — no output.</li>
-  </ol>
-  <div class="cta" style="margin-top:24px">
-    <a class="btn btn-primary" href="https://github.com/faresrafat3/colony-kernel">Get it on GitHub</a>
-    <a class="btn btn-ghost" href="https://faresrafat3.github.io">Hire Fares for an audit →</a>
-  </div>
-</div></section>
-
-<footer><div class="wrap">
-  <div>© 2026 Fares Rafat · Cairo, Egypt · MIT</div>
-  <div><a href="https://github.com/faresrafat3/colony-kernel">Source</a> · <a href="https://github.com/faresrafat3">Profile</a></div>
-</div></footer>
-
+</div>
 <script>
-fetch('demo.json').then(r=>r.text()).then(t=>{
-  document.getElementById('demo').textContent = t;
-}).catch(()=>{ document.getElementById('demo').textContent='// demo.json not loaded — see GitHub repo for the run command'; });
+fetch('demo.json')
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.text(); })
+  .then(t => { document.getElementById('demo').textContent = t; })
+  .catch(e => { document.getElementById('demo').textContent = 'failed to load demo.json (' + e.message + ') — fetch it directly.'; });
 </script>
 </body>
 </html>
