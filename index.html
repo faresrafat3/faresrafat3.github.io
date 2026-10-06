@@ -5,15 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Fares Rafat — AI Agent Reliability &amp; QA · Provably Passes Verification</title>
 <meta property="og:title" content="Fares Rafat — AI Agent Reliability & QA" />
-<meta property="og:description" content="Deterministic verification, eval harnesses, and audit trails for AI agents. colony-kernel: 67 offline tests, byte-identical replay. Open for contract." />
+<meta property="og:description" content="Deterministic verification, eval harnesses, and audit trails for AI agents. colony-kernel: 117 offline tests, byte-identical replay. Open for contract." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://faresrafat3.github.io/" />
 <meta property="og:image" content="https://faresrafat3.github.io/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Fares Rafat — AI Agent Reliability & QA" />
-<meta name="twitter:description" content="Deterministic verification for AI agents. colony-kernel: 67 offline tests, byte-identical replay. Open for contract." />
+<meta name="twitter:description" content="Deterministic verification for AI agents. colony-kernel: 117 offline tests, byte-identical replay. Open for contract." />
 <meta name="twitter:image" content="https://faresrafat3.github.io/og.png" />
 <meta name="description" content="Fares Rafat builds evaluation harnesses and the assurance layer for AI agents: deterministic verification, human-escalation rules, audit trails, and LLM cost routing. Open for contract." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2307090d'/%3E%3Cpath d='M8 21 L14 11 L20 21' fill='none' stroke='%234ade80' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M21 21 L25 13' fill='none' stroke='%234ade80' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -80,8 +81,6 @@
   .card:hover{border-color:#2b3a4f;transform:translateY(-2px)}
   .card h3{font-size:17px;margin-bottom:8px;letter-spacing:-.01em}
   .card p{color:var(--dim);font-size:14.5px}
-  .icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;
-    font-size:19px;margin-bottom:14px;background:var(--panel2);border:1px solid var(--line)}
 
   /* PROBLEM / OFFER split */
   .split{display:grid;grid-template-columns:1fr 1fr;gap:18px}
@@ -141,9 +140,33 @@
 
   code{font-family:'JetBrains Mono',monospace;background:var(--panel2);border:1px solid var(--line);
     padding:1px 6px;border-radius:5px;font-size:.9em}
+
+  /* Keyboard users land on the nav, not on the hero: this is the first
+     focusable thing on the page and it is invisible until focused. */
+  .skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--accent);color:#06240f;
+    padding:10px 16px;border-radius:0 0 8px 0;font-weight:600;font-size:14px}
+  .skip:focus{left:0}
+  a:focus-visible,.btn:focus-visible,select:focus-visible{outline:2px solid var(--accent2);outline-offset:3px;
+    border-radius:4px}
+
+  /* Service marks: one stroke weight, one size, no emoji. */
+  .icon{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;
+    background:var(--panel2);border:1px solid var(--line);margin-bottom:14px;color:var(--accent)}
+  .icon svg{width:19px;height:19px;stroke:currentColor;stroke-width:1.6;fill:none;
+    stroke-linecap:round;stroke-linejoin:round}
+
+  /* The page's only motion is a hover lift on cards and buttons. A reader who
+     asked for less of it gets the same page without any of it. */
+  @media (prefers-reduced-motion: reduce) {
+    html{scroll-behavior:auto}
+    .btn:hover{transform:none}
+    *{animation:none !important;transition:none !important}
+  }
 </style>
 </head>
 <body>
+
+<a class="skip" href="#main">Skip to content</a>
 
 <nav><div class="wrap">
   <div class="logo">Fares<span>.</span>Rafat</div>
@@ -155,6 +178,7 @@
   </div>
 </div></nav>
 
+<main id="main">
 <header><div class="wrap">
   <div class="pill"><span class="dot"></span> Available for contract · agent reliability &amp; QA</div>
   <h1>AI agent systems that <em>provably</em> pass QA.</h1>
@@ -197,28 +221,28 @@
 <section><div class="wrap">
   <div class="sec-title">Assurance &amp; reliability services</div>
   <div class="grid g3">
-    <div class="card"><div class="icon">🛡️</div>
+    <div class="card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 2.5 3.5 5v5c0 3.6 2.6 6.6 6.5 7.5 3.9-.9 6.5-3.9 6.5-7.5V5L10 2.5Z"/><path d="M7.2 10.2 9.2 12.2 13 8.4"/></svg></div>
       <h3>Eval-Harness Build</h3>
       <p>The full verification layer: regression tests for agent behavior, machine-checkable
       pass/fail gates, confidence scoring, and a human-escalation rule. “Done” becomes a test,
       not a claim.</p></div>
-    <div class="card"><div class="icon">🔍</div>
+    <div class="card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="8.6" cy="8.6" r="5.1"/><path d="m12.4 12.4 4.1 4.1M6.6 8.6h4M8.6 6.6v4"/></svg></div>
       <h3>Agent Reliability Audits</h3>
       <p>A fixed-scope review of your agent pipeline: can you prove each step passed? Where can
       it silently fail? You get a prioritized, evidence-backed hardening plan.</p></div>
-    <div class="card"><div class="icon">📜</div>
+    <div class="card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M5 2.8h7.5L16 6.3V17.2H5Z"/><path d="M12.4 2.8v3.5H16M7.6 10h5M7.6 13h5"/></svg></div>
       <h3>Compliance &amp; Audit Trails</h3>
       <p>Deterministic, replayable run logs and content-addressed approvals — evidence your
       auditors (or your customers) can verify. Built for regulated, high-stakes workflows.</p></div>
-    <div class="card"><div class="icon">🏗️</div>
+    <div class="card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 2.6 16.4 6.4v7.2L10 17.4 3.6 13.6V6.4Z"/><path d="M10 10.2 16.4 6.4M10 10.2 3.6 6.4M10 10.2v7.2"/></svg></div>
       <h3>Agent System Builds</h3>
       <p>End-to-end agent orchestration with governance: role-scoped permissions, veto gates,
       deterministic state, and run logs you can audit.</p></div>
-    <div class="card"><div class="icon">🔎</div>
+    <div class="card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="8.4" cy="8.4" r="4.9"/><path d="m12.1 12.1 4.3 4.3M8.4 3.6v1.9M3.6 8.4h1.9M8.4 11.4v1.9M5.3 5.3l1.3 1.3"/></svg></div>
       <h3>RAG &amp; Grounding</h3>
       <p>Retrieval and grounding that holds up: answers grounded in approved knowledge, with
       evaluation you can measure — not vibes.</p></div>
-    <div class="card"><div class="icon">💸</div>
+    <div class="card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 2.8v14.4"/><path d="M13.6 5.6C12.7 4.7 11.4 4.3 10 4.3c-2.1 0-3.6 1-3.6 2.6 0 3.9 7.2 1.8 7.2 5.7 0 1.7-1.6 2.8-3.9 2.8-1.6 0-3-.5-4-1.6"/></svg></div>
       <h3>LLM Cost &amp; Reliability Routing</h3>
       <p>Route every call to the cheapest model that can do the job, with automatic failover.
       Cut inference cost and remove provider lock-in.</p></div>
@@ -262,12 +286,12 @@
     <a class="repo" href="https://github.com/faresrafat3/agent-handoff" target="_blank" rel="noopener">
       <span class="lang">Python</span>
       <span class="meta"><h3>agent-handoff <span>typed handoffs so a long agent session survives a restart</span></h3>
-      <p><strong>Installs in 3 commands.</strong> Rejects hollow handoffs, stale checkpoints, and leaked credentials · 78 tests · zero dependencies · works with Claude Code, Cursor, Codex, or any agent. Ships a <a href="https://github.com/faresrafat3/agent-handoff/blob/main/docs/SPEC.md" target="_blank" rel="noopener">normative spec</a> and a <strong>published conformance suite</strong> — any implementation can conform, in any language.</p></span>
+      <p><strong>Installs in 3 commands.</strong> Rejects hollow handoffs, stale checkpoints, and leaked credentials · 82 tests · zero dependencies · works with Claude Code, Cursor, Codex, or any agent. Ships a <a href="https://github.com/faresrafat3/agent-handoff/blob/main/docs/SPEC.md" target="_blank" rel="noopener">normative spec</a> and a <strong>published conformance suite</strong> — any implementation can conform, in any language.</p></span>
     </a>
     <a class="repo" href="https://github.com/faresrafat3/colony-kernel" target="_blank" rel="noopener">
       <span class="lang">TypeScript</span>
       <span class="meta"><h3>colony-kernel <span>deterministic mission-control for AI-agent colonies</span></h3>
-      <p>22-stage state machine · content-addressed approvals · budget ledger · 67 offline tests · RFC 8785 JCS.</p></span>
+      <p>22-stage state machine · content-addressed approvals · budget ledger · 117 offline tests · RFC 8785 JCS.</p></span>
     </a>
     <a class="repo" href="https://github.com/faresrafat3/crew-research-council" target="_blank" rel="noopener">
       <span class="lang">Python</span>
@@ -324,6 +348,7 @@
     <a href="mailto:faresrafat3@gmail.com">Email</a>
   </div>
 </div></footer>
+</main>
 
 </body>
 </html>
