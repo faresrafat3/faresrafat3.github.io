@@ -19,7 +19,8 @@
  * 2 a count could not be measured.
  */
 import { spawnSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -30,18 +31,25 @@ const PROJECTS = {
   "colony-kernel": {
     dir: join(root, "..", "colony-kernel"),
     measure() {
-      const out = join(root, ".claims-vitest.json");
-      const run = spawnSync("npx", ["vitest", "run", "--reporter=json", `--outputFile=${out}`], {
-        cwd: this.dir,
-        encoding: "utf8",
-        stdio: ["ignore", "pipe", "pipe"]
-      });
-      if (run.status !== 0) {
-        process.stderr.write(run.stderr || "");
-        return null;
+      // The report goes to a temp dir. A gate that leaves files in the tree it
+      // checks is a gate that dirties the repo it guards.
+      const dir = mkdtempSync(join(tmpdir(), "claims-"));
+      const out = join(dir, "vitest.json");
+      try {
+        const run = spawnSync("npx", ["vitest", "run", "--reporter=json", `--outputFile=${out}`], {
+          cwd: this.dir,
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "pipe"]
+        });
+        if (run.status !== 0) {
+          process.stderr.write(run.stderr || "");
+          return null;
+        }
+        const n = JSON.parse(readFileSync(out, "utf8")).numTotalTests;
+        return Number.isInteger(n) ? n : null;
+      } finally {
+        rmSync(dir, { recursive: true, force: true });
       }
-      const n = JSON.parse(readFileSync(out, "utf8")).numTotalTests;
-      return Number.isInteger(n) ? n : null;
     }
   },
   "agent-handoff": {
