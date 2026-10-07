@@ -3,164 +3,144 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Fares Rafat — AI Agent Reliability &amp; QA · Provably Passes Verification</title>
-<meta property="og:title" content="Fares Rafat — AI Agent Reliability & QA" />
-<meta property="og:description" content="Deterministic verification, eval harnesses, and audit trails for AI agents. colony-kernel: 117 offline tests, byte-identical replay. Open for contract." />
+<title>Fares Rafat — I build the gate that decides whether an agent's work counts</title>
+<meta name="description" content="Regression suites, deterministic replay, escalation rules, and audit trails for AI agents. colony-kernel: 117 offline tests. Open for contract." />
+<meta property="og:title" content="Fares Rafat — the gate that decides whether an agent's work counts" />
+<meta property="og:description" content="Regression suites, deterministic replay, escalation rules, and audit trails for AI agents. colony-kernel: 117 offline tests. Open for contract." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://faresrafat3.github.io/" />
 <meta property="og:image" content="https://faresrafat3.github.io/og.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Fares Rafat — AI Agent Reliability & QA" />
-<meta name="twitter:description" content="Deterministic verification for AI agents. colony-kernel: 117 offline tests, byte-identical replay. Open for contract." />
+<meta name="twitter:title" content="Fares Rafat — the gate that decides whether an agent's work counts" />
+<meta name="twitter:description" content="Regression suites, deterministic replay, escalation rules, and audit trails for AI agents. colony-kernel: 117 offline tests." />
 <meta name="twitter:image" content="https://faresrafat3.github.io/og.png" />
-<meta name="description" content="Fares Rafat builds evaluation harnesses and the assurance layer for AI agents: deterministic verification, human-escalation rules, audit trails, and LLM cost routing. Open for contract." />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2307090d'/%3E%3Cpath d='M8 21 L14 11 L20 21' fill='none' stroke='%234ade80' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M21 21 L25 13' fill='none' stroke='%234ade80' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2315181B'/%3E%3Crect x='7.5' y='7.5' width='17' height='17' fill='none' stroke='%23E8EAE4' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23A33B26'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
 <style>
+  /* ── Tokens ──────────────────────────────────────────────────────────────
+     One accent (--seal). Hairlines instead of shadows. No gradients. A near
+     square radius on the one dark object, none anywhere else.               */
   :root{
-    --bg:#07090d; --panel:#0d1117; --panel2:#111823; --line:#1c2635;
-    --txt:#e6edf6; --dim:#8b98ab; --accent:#4ade80; --accent2:#38bdf8; --warn:#fbbf24;
-    --max:1080px; --r:14px;
+    --paper:#E8EAE4; --sheet:#F3F4F0; --ink:#15181B; --ink-2:#4A5157;
+    --rule:#C4C9BF; --rule-soft:#D6DAD1; --seal:#A33B26;
+    --term-bg:#15181B; --term-ink:#DDE1D8; --term-dim:#8C958B;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+    --measure:1120px; --rail:128px; --gutter:40px;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
+  *,*::before,*::after{box-sizing:border-box}
+  html{margin:0;padding:0;scroll-behavior:smooth}
   body{
-    background:
-      radial-gradient(1100px 500px at 80% -10%, rgba(56,189,248,.10), transparent 60%),
-      radial-gradient(900px 420px at 10% 0%, rgba(74,222,128,.08), transparent 60%),
-      var(--bg);
-    color:var(--txt); font-family:Inter,system-ui,sans-serif; line-height:1.6;
-    -webkit-font-smoothing:antialiased;
+    margin:0;background:var(--paper);color:var(--ink);
+    font:400 17px/1.62 var(--sans);-webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
-  a{color:var(--accent2);text-decoration:none}
-  a:hover{text-decoration:underline}
+  h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.018em}
+  p{margin:0 0 16px}
+  a{color:inherit;text-decoration:none}
+  code,kbd{font:400 .88em/1 var(--mono)}
 
-  /* NAV */
-  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
-    background:rgba(7,9,13,.72);border-bottom:1px solid var(--line)}
-  nav .wrap{display:flex;align-items:center;gap:20px;height:60px}
-  .logo{font-weight:800;letter-spacing:-.02em;font-size:17px;color:var(--txt)}
-  .logo span{color:var(--accent)}
-  nav .links{margin-left:auto;display:flex;gap:22px;font-size:14px}
-  nav .links a{color:var(--dim)} nav .links a:hover{color:var(--txt);text-decoration:none}
-
-  /* HERO */
-  header{padding:96px 0 72px;text-align:center}
-  .pill{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--accent);
-    background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.25);
-    padding:6px 14px;border-radius:999px;margin-bottom:26px}
-  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);
-    box-shadow:0 0 10px var(--accent)}
-  h1{font-size:clamp(34px,5.4vw,58px);line-height:1.08;letter-spacing:-.03em;font-weight:800;
-    max-width:900px;margin:0 auto 20px}
-  h1 em{font-style:normal;background:linear-gradient(92deg,var(--accent),var(--accent2));
-    -webkit-background-clip:text;background-clip:text;color:transparent}
-  .sub{color:var(--dim);font-size:clamp(16px,2.2vw,20px);max-width:680px;margin:0 auto 34px}
-  .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-  .btn{display:inline-block;padding:13px 26px;border-radius:10px;font-weight:600;font-size:15px;
-    border:1px solid transparent;transition:transform .12s ease,box-shadow .12s ease}
-  .btn:hover{text-decoration:none;transform:translateY(-1px)}
-  .btn-primary{background:linear-gradient(92deg,var(--accent),#22c55e);color:#06240f;
-    box-shadow:0 8px 28px rgba(74,222,128,.28)}
-  .btn-ghost{border-color:var(--line);color:var(--txt);background:var(--panel)}
-  .btn-ghost:hover{border-color:var(--accent2)}
-
-  /* SECTIONS */
-  section{padding:64px 0}
-  .sec-title{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--dim);margin-bottom:26px;text-align:center}
-  .grid{display:grid;gap:18px}
-  .g3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-  .g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
-
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
-    padding:24px;transition:border-color .15s ease,transform .15s ease}
-  .card:hover{border-color:#2b3a4f;transform:translateY(-2px)}
-  .card h3{font-size:17px;margin-bottom:8px;letter-spacing:-.01em}
-  .card p{color:var(--dim);font-size:14.5px}
-
-  /* PROBLEM / OFFER split */
-  .split{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-  @media(max-width:820px){.split{grid-template-columns:1fr}}
-  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:26px}
-  .panel.bad h3{color:#f87171} .panel.good h3{color:var(--accent)}
-  .panel ul{list-style:none;margin-top:14px;display:grid;gap:10px}
-  .panel li{padding-left:24px;position:relative;color:var(--dim);font-size:14.5px}
-  .panel li::before{position:absolute;left:0;top:-1px;font-weight:700}
-  .panel.bad li::before{content:"✕";color:#f87171}
-  .panel.good li::before{content:"✓";color:var(--accent)}
-
-  /* PRICING */
-  .price{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
-    padding:28px;display:flex;flex-direction:column}
-  .price.featured{border-color:rgba(74,222,128,.4);
-    box-shadow:0 0 0 1px rgba(74,222,128,.12),0 14px 40px rgba(74,222,128,.06)}
-  .price .tag{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--accent);margin-bottom:8px}
-  .price .amt{font-size:34px;font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
-  .price .per{color:var(--dim);font-size:13.5px;margin-bottom:16px}
-  .price ul{list-style:none;display:grid;gap:9px;margin-bottom:20px}
-  .price li{padding-left:22px;position:relative;color:var(--dim);font-size:14px}
-  .price li::before{content:"→";position:absolute;left:0;color:var(--accent2)}
-  .price .btn{margin-top:auto;text-align:center}
-
-  /* REPOS */
-  .repo{display:flex;gap:16px;align-items:flex-start;background:var(--panel);
-    border:1px solid var(--line);border-radius:var(--r);padding:20px;
-    transition:border-color .15s}
-  .repo:hover{border-color:var(--accent2)}
-  .repo .meta{min-width:0}
-  .repo h3{font-size:15.5px;margin-bottom:4px}
-  .repo h3 span{color:var(--dim);font-weight:400;font-size:13px;margin-left:8px}
-  .repo p{color:var(--dim);font-size:13.5px}
-  .lang{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent2);
-    background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);
-    padding:2px 8px;border-radius:6px;white-space:nowrap}
-
-  /* DOCTRINE */
-  .doctrine{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-  .dtile{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:18px}
-  .dtile strong{display:block;margin-bottom:5px;font-size:14.5px}
-  .dtile span{color:var(--dim);font-size:13.5px}
-
-  /* CTA BAND */
-  .band{background:linear-gradient(92deg,rgba(74,222,128,.10),rgba(56,189,248,.08));
-    border:1px solid var(--line);border-radius:18px;padding:48px 32px;text-align:center}
-  .band h2{font-size:clamp(24px,3.6vw,34px);letter-spacing:-.02em;margin-bottom:12px}
-  .band p{color:var(--dim);max-width:560px;margin:0 auto 26px;font-size:16px}
-
-  footer{border-top:1px solid var(--line);margin-top:40px;padding:32px 0;color:var(--dim);
-    font-size:13.5px}
-  footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-  .social{display:flex;gap:18px}
-  .social a{color:var(--dim)} .social a:hover{color:var(--txt)}
-
-  code{font-family:'JetBrains Mono',monospace;background:var(--panel2);border:1px solid var(--line);
-    padding:1px 6px;border-radius:5px;font-size:.9em}
-
-  /* Keyboard users land on the nav, not on the hero: this is the first
-     focusable thing on the page and it is invisible until focused. */
-  .skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--accent);color:#06240f;
-    padding:10px 16px;border-radius:0 0 8px 0;font-weight:600;font-size:14px}
+  .skip{position:absolute;left:-9999px;top:0;z-index:10;background:var(--ink);color:var(--paper);
+    padding:11px 16px;font-size:15px}
   .skip:focus{left:0}
-  a:focus-visible,.btn:focus-visible,select:focus-visible{outline:2px solid var(--accent2);outline-offset:3px;
-    border-radius:4px}
+  :focus-visible{outline:2px solid var(--seal);outline-offset:3px}
 
-  /* Service marks: one stroke weight, one size, no emoji. */
-  .icon{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;
-    background:var(--panel2);border:1px solid var(--line);margin-bottom:14px;color:var(--accent)}
-  .icon svg{width:19px;height:19px;stroke:currentColor;stroke-width:1.6;fill:none;
-    stroke-linecap:round;stroke-linejoin:round}
+  /* One measure, one place. The masthead, the bands and the footer all hang
+     from this rule — a section that sets its own width drifts. */
+  .sheet,.band{max-width:var(--measure);margin:0 auto;padding-left:28px;padding-right:28px}
 
-  /* The page's only motion is a hover lift on cards and buttons. A reader who
-     asked for less of it gets the same page without any of it. */
-  @media (prefers-reduced-motion: reduce) {
+  /* ── Masthead ─────────────────────────────────────────────────────────── */
+  .masthead{border-bottom:1px solid var(--rule)}
+  .masthead .sheet{display:flex;align-items:baseline;gap:28px;padding-top:22px;padding-bottom:22px;flex-wrap:wrap}
+  .who{font-weight:600;font-size:17px;letter-spacing:-.01em}
+  .who span{color:var(--ink-2);font-weight:400}
+  .nav{margin-left:auto;display:flex;gap:22px;font-size:15.5px;color:var(--ink-2)}
+  .nav a{border-bottom:1px solid transparent;padding-bottom:2px}
+  .nav a:hover{color:var(--ink);border-bottom-color:var(--ink)}
+
+  /* ── Bands: rail + content, one empty column at the right ─────────────── */
+  .band{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);gap:0 var(--gutter);
+    padding-top:66px;padding-bottom:66px;border-bottom:1px solid var(--rule)}
+  .rail{font:400 13px/1.5 var(--mono);color:var(--ink-2);padding-top:9px}
+  .body{min-width:0}
+  /* Prose keeps a measure; tables, the transcript and the actions use the whole
+     column. The class goes on the element, never on the wrapper — a wrapper
+     class cannot widen its children. */
+  .body > *{max-width:66ch}
+  .body > .wide{max-width:none}
+
+  h1{font-size:clamp(31px,4.4vw,44px);line-height:1.1;letter-spacing:-.026em;margin-bottom:22px;max-width:19ch}
+  h2{font-size:clamp(22px,2.6vw,28px);line-height:1.2;margin-bottom:18px}
+  .lead{font-size:20px;line-height:1.55;color:var(--ink-2);margin-bottom:30px}
+
+  /* ── The one dark object: a real gate run ─────────────────────────────── */
+  .term{background:var(--term-bg);color:var(--term-ink);padding:24px 22px 22px;margin:0 0 26px;
+    border-left:3px solid var(--seal);overflow-x:auto}
+  .term pre{margin:0;font:400 13.5px/1.75 var(--mono);white-space:pre}
+  .term .prompt{color:var(--seal)}
+  .term .muted{color:var(--term-dim)}
+  .term figcaption{font:400 13px/1.5 var(--mono);color:var(--term-dim);
+    border-top:1px solid #2E343A;margin-top:16px;padding-top:12px}
+
+  /* ── Actions ──────────────────────────────────────────────────────────── */
+  .acts{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-block;padding:13px 24px;font-size:16px;font-weight:500;border:1px solid var(--ink);
+    transition:background .14s ease,color .14s ease}
+  .btn-solid{background:var(--ink);color:var(--paper)}
+  .btn-solid:hover{background:var(--seal);border-color:var(--seal)}
+  .btn-line:hover{background:var(--ink);color:var(--paper)}
+  .acts .aside{font-size:15px;color:var(--ink-2)}
+
+  /* ── Ruled tables: the only structural device, and it carries data ────── */
+  table{width:100%;border-collapse:collapse;font-size:16px}
+  th{text-align:left;font:500 12.5px/1.4 var(--mono);color:var(--ink-2);
+    padding:0 30px 10px 0;border-bottom:1px solid var(--ink);vertical-align:bottom}
+  td{padding:16px 30px 16px 0;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+  th:last-child,td:last-child{padding-right:0}
+  td.key{font-weight:500}
+  td .sub{display:block;color:var(--ink-2);font-size:14.5px;margin-top:3px}
+  td.cmd{font:400 13.5px/1.6 var(--mono);color:var(--ink-2);white-space:nowrap}
+  tr.marked td.key{color:var(--seal)}
+  .seal{display:inline-block;font:500 12px/1 var(--mono);color:var(--seal);
+    border:1px solid var(--seal);padding:5px 8px;margin-left:10px;vertical-align:2px;white-space:nowrap}
+  .num{font-variant-numeric:tabular-nums;font-weight:500}
+
+  /* ── How I work: statements, not tiles ───────────────────────────────── */
+  .creed{list-style:none;margin:0;padding:0;max-width:74ch}
+  .creed li{padding:14px 0;border-bottom:1px solid var(--rule-soft);display:grid;
+    grid-template-columns:minmax(0,26ch) minmax(0,1fr);gap:6px 28px;align-items:baseline}
+  .creed li:first-child{border-top:1px solid var(--rule-soft)}
+  .creed b{font-weight:600}
+  .creed span{color:var(--ink-2)}
+
+  /* ── Closing ──────────────────────────────────────────────────────────── */
+  .closing p{max-width:58ch}
+  .note{font-size:15px;color:var(--ink-2);margin-top:18px}
+
+  footer{border-top:1px solid var(--rule)}
+  footer .sheet{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;
+    padding-top:24px;padding-bottom:40px;font-size:15px;color:var(--ink-2)}
+  footer .links{display:flex;gap:20px}
+  footer a{border-bottom:1px solid var(--rule)}
+  footer a:hover{color:var(--ink);border-bottom-color:var(--ink)}
+
+  @media (max-width:860px){
+    .band{grid-template-columns:minmax(0,1fr);gap:14px;padding-top:46px;padding-bottom:46px}
+    /* A transcript that scrolls sideways hides its own evidence. Wrap it
+       instead: a wrapped gate run is still the gate run. */
+    .term pre{white-space:pre-wrap;overflow-wrap:anywhere}
+    .term figcaption{border-top-width:1px}
+    .rail{padding-top:0}
+    .body > *{max-width:none}
+    .creed li{grid-template-columns:minmax(0,1fr);gap:4px}
+    td.cmd{white-space:normal}
+    th:nth-child(3),td:nth-child(3){display:none}
+    .nav{margin-left:0;width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
-    .btn:hover{transform:none}
-    *{animation:none !important;transition:none !important}
+    .btn{transition:none}
   }
 </style>
 </head>
@@ -168,187 +148,192 @@
 
 <a class="skip" href="#main">Skip to content</a>
 
-<nav><div class="wrap">
-  <div class="logo">Fares<span>.</span>Rafat</div>
-  <div class="links">
-    <a href="#offer">Services</a>
-    <a href="#work">Work</a>
-    <a href="#pricing">Pricing</a>
-    <a href="https://github.com/faresrafat3">GitHub</a>
+<header class="masthead">
+  <div class="sheet">
+    <div class="who">Fares Rafat <span>Cairo, available for contract</span></div>
+    <nav class="nav">
+      <a href="#breaks">What breaks</a>
+      <a href="#engagements">Engagements</a>
+      <a href="#work">Work</a>
+      <a href="https://github.com/faresrafat3">GitHub</a>
+    </nav>
   </div>
-</div></nav>
+</header>
 
 <main id="main">
-<header><div class="wrap">
-  <div class="pill"><span class="dot"></span> Available for contract · agent reliability &amp; QA</div>
-  <h1>AI agent systems that <em>provably</em> pass QA.</h1>
-  <p class="sub">I build the trust &amp; assurance layer for AI agents — evaluation harnesses,
-  deterministic verification, human-escalation rules, and audit trails. When your agent says
-  “it works,” you can <em>prove</em> it, and escalate what you can't.</p>
-  <div class="cta">
-    <a class="btn btn-primary" href="mailto:faresrafat3@gmail.com?subject=AI%20agent%20project">Book a free 20-min call</a>
-    <a class="btn btn-ghost" href="https://github.com/faresrafat3/agent-handoff">Try agent-handoff →</a>
-    <a class="btn btn-ghost" href="https://github.com/faresrafat3/agent-handoff/blob/main/docs/AUDIT.md" target="_blank" rel="noopener">Free 30-second diagnostic →</a>
-  </div>
-</div></header>
 
-<section id="offer"><div class="wrap">
-  <div class="sec-title">The problem I solve</div>
-  <div class="split">
-    <div class="panel bad">
-      <h3>Without an assurance layer</h3>
-      <ul>
-        <li>An agent says the tests passed — nobody can prove it.</li>
-        <li>Regressions reach customers before anyone notices.</li>
-        <li>No audit trail when something goes wrong in production.</li>
-        <li>“It worked on my machine” is your only evidence.</li>
-        <li>No safe way to know when to let the AI act unattended.</li>
+  <!-- The first thing on the page is proof, not a promise. -->
+  <section class="band">
+    <div class="rail">What I do</div>
+    <div class="body">
+      <h1>I build the gate that decides whether an agent's work counts.</h1>
+      <p class="lead">Regression suites, deterministic replay, escalation rules, and audit
+      trails. You get a command that decides, and a record of what it decided.</p>
+
+      <figure class="term wide">
+        <pre><span class="prompt"># colony-kernel — the kernel I build engagements around</span>
+<span class="prompt">$</span> npm run verify
+gate typecheck: OK
+gate lint: OK
+Tests  <span class="muted">117 passed (117)</span>
+gate claims: OK (117 tests, 4 surfaces agree)
+gate demo: OK (byte-identical reruns, 5613 bytes)
+<span class="muted">verify: ALL GATES GREEN</span></pre>
+        <figcaption>Captured on this machine, 2026-10-06. Clone it and run the same line;
+        if your tree disagrees, the gate fails rather than the page lying.</figcaption>
+      </figure>
+
+      <div class="acts wide">
+        <a class="btn btn-solid" href="mailto:faresrafat3@gmail.com?subject=AI%20agent%20project">Book a 20-minute call</a>
+        <a class="btn btn-line" href="https://github.com/faresrafat3/agent-handoff/blob/main/docs/AUDIT.md" target="_blank" rel="noopener">Run the 30-second audit yourself</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="breaks">
+    <div class="rail">Failure modes</div>
+    <div class="body">
+      <table class="wide">
+        <thead>
+          <tr><th style="width:40%">What goes wrong</th><th>What I put in</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="key">The agent reports success and nobody can check it</td>
+            <td>A test that fails when the behaviour regresses</td></tr>
+          <tr><td class="key">State lives in context instead of on disk</td>
+            <td>Typed handoffs and checkpoints that a session cannot quietly corrupt</td></tr>
+          <tr><td class="key">Failures are silent, so the same bug ships twice</td>
+            <td>A failure-mode map and gates that fail loudly on bad configuration</td></tr>
+          <tr><td class="key">Nobody knows when to let the agent act alone</td>
+            <td>An escalation rule that names the cases a test cannot decide</td></tr>
+          <tr><td class="key">Production incidents leave no trail</td>
+            <td>Content-addressed run logs an auditor can re-verify</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="band" id="engagements">
+    <div class="rail">Engagements</div>
+    <div class="body">
+      <table class="wide">
+        <thead>
+          <tr><th style="width:23%">Engagement</th><th style="width:20%">Fee</th><th>You get</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="key">Reliability audit</td>
+            <td><span class="num">$150–$1.5k</span><span class="sub">fixed fee, a few days</span></td>
+            <td>Pipeline review, failure-mode map, prioritized hardening plan, recorded walkthrough</td>
+          </tr>
+          <tr class="marked">
+            <td class="key">Eval-harness build<span class="seal">most value</span></td>
+            <td><span class="num">$1.5k–$6k</span><span class="sub">fixed fee</span></td>
+            <td>Regression suite, machine-checkable gates, escalation rules, audit trail, handover docs</td>
+          </tr>
+          <tr>
+            <td class="key">Ongoing advisory</td>
+            <td><span class="num">from $150/mo</span><span class="sub">retainer</span></td>
+            <td>Architecture reviews, reliability guardrails, cost routing, priority async support</td>
+          </tr>
+          <tr>
+            <td class="key">Grounding and cost routing</td>
+            <td>Scoped per system</td>
+            <td>Retrieval grounded in approved knowledge, cheapest-model routing with automatic failover</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">The first audit is deliberately cheap. If the honest answer is
+      “you need <code>npm test</code> and nothing else,” that is what the call says.</p>
+    </div>
+  </section>
+
+  <section class="band" id="work">
+    <div class="rail">Open source work</div>
+    <div class="body">
+      <table class="wide">
+        <thead>
+          <tr><th style="width:23%">Project</th><th>What it proves</th><th>Check it</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="key"><a href="https://github.com/faresrafat3/agent-handoff" target="_blank" rel="noopener">agent-handoff</a>
+              <span class="sub">Python, zero dependencies</span></td>
+            <td>Typed handoffs so a long agent session survives a restart. Installs in three
+            commands; ships a normative spec and a conformance suite any implementation can meet.</td>
+            <td class="cmd">agent-handoff doctor --strict</td>
+          </tr>
+          <tr>
+            <td class="key"><a href="https://github.com/faresrafat3/colony-kernel" target="_blank" rel="noopener">colony-kernel</a>
+              <span class="sub">TypeScript, 117 offline tests</span></td>
+            <td>Deterministic mission control: 22-stage state machine, content-addressed
+            approvals, byte-identical replay. <a href="/colony-kernel/">Run the mission in your browser</a>.</td>
+            <td class="cmd">npm run verify</td>
+          </tr>
+          <tr>
+            <td class="key"><a href="https://github.com/faresrafat3/crew-research-council" target="_blank" rel="noopener">crew-research-council</a>
+              <span class="sub">Python</span></td>
+            <td>Multi-agent research governance: blackboard state, veto pipeline, role-scoped
+            write rights, so one confident answer cannot pass as a finding.</td>
+            <td class="cmd">pytest</td>
+          </tr>
+          <tr>
+            <td class="key"><a href="https://github.com/faresrafat3/dspy-lab" target="_blank" rel="noopener">dspy-lab</a>
+              <span class="sub">Python</span></td>
+            <td>An offline LM lab: prompt compilation, RAG, graph state, typed tool calls —
+            no API key needed to iterate.</td>
+            <td class="cmd">pytest</td>
+          </tr>
+          <tr>
+            <td class="key"><a href="https://github.com/faresrafat3/dsh-fallback-chain" target="_blank" rel="noopener">dsh-fallback-chain</a>
+              <span class="sub">JavaScript</span></td>
+            <td>Free-tier routing: automatic provider failover, quota-aware and cost-aware
+            model selection.</td>
+            <td class="cmd">node test</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">Twenty more repositories, including the ones behind this page:
+      <a href="https://github.com/faresrafat3">github.com/faresrafat3</a>.</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="rail">How I work</div>
+    <div class="body">
+      <ul class="creed">
+        <li><b>Records over claims</b><span>A claim is real only when a verifier can quote it from disk.</span></li>
+        <li><b>Run it before saying it works</b><span>The command, the file, the port. Never reasoning alone.</span></li>
+        <li><b>Fail loud</b><span>Misconfiguration surfaces immediately. No silent skips.</span></li>
+        <li><b>Deterministic by default</b><span>Seeded runs, replayable state, byte-identical output.</span></li>
       </ul>
     </div>
-    <div class="panel good">
-      <h3>With my assurance layer</h3>
-      <ul>
-        <li>Every step has a machine-checkable pass/fail gate.</li>
-        <li>Agent regressions caught by tests before users do.</li>
-        <li>Escalation rules for when the agent isn't sure.</li>
-        <li>Replayable, content-addressed audit trail for every run.</li>
-        <li><code>npm run verify</code> — evidence, not claims.</li>
-      </ul>
+  </section>
+
+  <section class="band closing">
+    <div class="rail">Contact</div>
+    <div class="body">
+      <h2>Tell me what your agent claims, and what would count as proof.</h2>
+      <p>Twenty minutes is enough to tell you whether I can help, and what I would change first.</p>
+      <div class="acts">
+        <a class="btn btn-solid" href="mailto:faresrafat3@gmail.com?subject=Free%2020-min%20call">Book a 20-minute call</a>
+        <a class="btn btn-line" href="mailto:faresrafat3@gmail.com">faresrafat3@gmail.com</a>
+      </div>
     </div>
-  </div>
-</div></section>
+  </section>
 
-<section><div class="wrap">
-  <div class="sec-title">Assurance &amp; reliability services</div>
-  <div class="grid g3">
-    <div class="card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 2.5 3.5 5v5c0 3.6 2.6 6.6 6.5 7.5 3.9-.9 6.5-3.9 6.5-7.5V5L10 2.5Z"/><path d="M7.2 10.2 9.2 12.2 13 8.4"/></svg></div>
-      <h3>Eval-Harness Build</h3>
-      <p>The full verification layer: regression tests for agent behavior, machine-checkable
-      pass/fail gates, confidence scoring, and a human-escalation rule. “Done” becomes a test,
-      not a claim.</p></div>
-    <div class="card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="8.6" cy="8.6" r="5.1"/><path d="m12.4 12.4 4.1 4.1M6.6 8.6h4M8.6 6.6v4"/></svg></div>
-      <h3>Agent Reliability Audits</h3>
-      <p>A fixed-scope review of your agent pipeline: can you prove each step passed? Where can
-      it silently fail? You get a prioritized, evidence-backed hardening plan.</p></div>
-    <div class="card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M5 2.8h7.5L16 6.3V17.2H5Z"/><path d="M12.4 2.8v3.5H16M7.6 10h5M7.6 13h5"/></svg></div>
-      <h3>Compliance &amp; Audit Trails</h3>
-      <p>Deterministic, replayable run logs and content-addressed approvals — evidence your
-      auditors (or your customers) can verify. Built for regulated, high-stakes workflows.</p></div>
-    <div class="card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 2.6 16.4 6.4v7.2L10 17.4 3.6 13.6V6.4Z"/><path d="M10 10.2 16.4 6.4M10 10.2 3.6 6.4M10 10.2v7.2"/></svg></div>
-      <h3>Agent System Builds</h3>
-      <p>End-to-end agent orchestration with governance: role-scoped permissions, veto gates,
-      deterministic state, and run logs you can audit.</p></div>
-    <div class="card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="10" cy="4.6" r="2.2"/><circle cx="4.6" cy="15.2" r="2.2"/><circle cx="15.4" cy="15.2" r="2.2"/><path d="M8.7 6.6 5.9 13.1M11.3 6.6l2.8 6.5M6.8 15.2h6.4"/></svg></div>
-      <h3>RAG &amp; Grounding</h3>
-      <p>Retrieval and grounding that holds up: answers grounded in approved knowledge, with
-      evaluation you can measure — not vibes.</p></div>
-    <div class="card"><div class="icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M10 2.8v14.4"/><path d="M13.6 5.6C12.7 4.7 11.4 4.3 10 4.3c-2.1 0-3.6 1-3.6 2.6 0 3.9 7.2 1.8 7.2 5.7 0 1.7-1.6 2.8-3.9 2.8-1.6 0-3-.5-4-1.6"/></svg></div>
-      <h3>LLM Cost &amp; Reliability Routing</h3>
-      <p>Route every call to the cheapest model that can do the job, with automatic failover.
-      Cut inference cost and remove provider lock-in.</p></div>
-  </div>
-</div></section>
-
-<section id="pricing"><div class="wrap">
-  <div class="sec-title">Engagement models</div>
-  <div class="grid g3">
-    <div class="price">
-      <h3>Reliability Audit</h3>
-      <div class="amt">$150 – $1.5k</div>
-      <div class="per">fixed fee · a few days · first one cheap</div>
-      <ul><li>Full pipeline review</li><li>Failure-mode map</li>
-      <li>Prioritized hardening plan</li><li>Recorded walkthrough</li></ul>
-      <a class="btn btn-ghost" href="mailto:faresrafat3@gmail.com?subject=Reliability%20Audit">Request an audit</a>
-    </div>
-    <div class="price featured">
-      <div class="tag">Highest value</div>
-      <h3>Eval-Harness Build</h3>
-      <div class="amt">$1.5k – $6k</div>
-      <div class="per">regression suite + gating + escalation</div>
-      <ul><li>Machine-checkable pass/fail gates</li><li>Human-in-the-loop rules</li>
-      <li>Confidence scoring &amp; audit trail</li><li>Docs &amp; handover</li></ul>
-      <a class="btn btn-primary" href="mailto:faresrafat3@gmail.com?subject=Eval%20harness%20build">Scope a build</a>
-    </div>
-    <div class="price">
-      <h3>Ongoing Advisory</h3>
-      <div class="amt">Retainer</div>
-      <div class="per">recurring · from ~$150/mo</div>
-      <ul><li>Architecture reviews</li><li>Agent reliability guardrails</li>
-      <li>Cost optimization</li><li>Priority async support</li></ul>
-      <a class="btn btn-ghost" href="mailto:faresrafat3@gmail.com?subject=Advisory%20retainer">Talk advisory</a>
-    </div>
-  </div>
-</div></section>
-
-<section id="work"><div class="wrap">
-  <div class="sec-title">Selected work — open source</div>
-  <div class="grid" style="gap:12px">
-    <a class="repo" href="https://github.com/faresrafat3/agent-handoff" target="_blank" rel="noopener">
-      <span class="lang">Python</span>
-      <span class="meta"><h3>agent-handoff <span>typed handoffs so a long agent session survives a restart</span></h3>
-      <p><strong>Installs in 3 commands.</strong> Rejects hollow handoffs, stale checkpoints, and leaked credentials · 82 tests · zero dependencies · works with Claude Code, Cursor, Codex, or any agent. Ships a <a href="https://github.com/faresrafat3/agent-handoff/blob/main/docs/SPEC.md" target="_blank" rel="noopener">normative spec</a> and a <strong>published conformance suite</strong> — any implementation can conform, in any language.</p></span>
-    </a>
-    <a class="repo" href="https://github.com/faresrafat3/colony-kernel" target="_blank" rel="noopener">
-      <span class="lang">TypeScript</span>
-      <span class="meta"><h3>colony-kernel <span>deterministic mission-control for AI-agent colonies</span></h3>
-      <p>22-stage state machine · content-addressed approvals · budget ledger · 117 offline tests · RFC 8785 JCS.</p></span>
-    </a>
-    <a class="repo" href="https://github.com/faresrafat3/crew-research-council" target="_blank" rel="noopener">
-      <span class="lang">Python</span>
-      <span class="meta"><h3>crew-research-council <span>multi-agent research governance</span></h3>
-      <p>Blackboard state · veto pipeline · role-scoped write rights · snapshotted K-lines.</p></span>
-    </a>
-    <a class="repo" href="https://github.com/faresrafat3/dspy-lab" target="_blank" rel="noopener">
-      <span class="lang">Python</span>
-      <span class="meta"><h3>dspy-lab <span>offline LM lab</span></h3>
-      <p>DSPy prompt compilation · LlamaIndex RAG · LangGraph state · PydanticAI typed tool calls.</p></span>
-    </a>
-    <a class="repo" href="https://github.com/faresrafat3/dsh-fallback-chain" target="_blank" rel="noopener">
-      <span class="lang">JavaScript</span>
-      <span class="meta"><h3>dsh-fallback-chain <span>free/cheap LLM routing</span></h3>
-      <p>Automatic provider failover · quota-aware routing · cost-aware model selection.</p></span>
-    </a>
-  </div>
-  <div style="text-align:center;margin-top:22px">
-    <a class="btn btn-ghost" href="https://github.com/faresrafat3">See all 20+ repos →</a>
-  </div>
-</div></section>
-
-<section><div class="wrap">
-  <div class="sec-title">How I work</div>
-  <div class="doctrine">
-    <div class="dtile"><strong>Records over claims</strong><span>A claim is real only if a verifier
-      can quote it from disk. No self-graded gates.</span></div>
-    <div class="dtile"><strong>Verify before claiming</strong><span>Run the command, read the
-      file, check the port. Never report “works” from reasoning.</span></div>
-    <div class="dtile"><strong>Fail loud</strong><span>Misconfiguration surfaces immediately —
-      never a silent skip.</span></div>
-    <div class="dtile"><strong>Determinism by default</strong><span>Seeded runs, replayable
-      state, byte-identical output.</span></div>
-  </div>
-</div></section>
-
-<section><div class="wrap">
-  <div class="band">
-    <h2>Have an agent pipeline you don't fully trust?</h2>
-    <p>Book a free 20-minute call. I'll tell you honestly whether I can help — and if the answer
-    is “you just need <code>npm test</code>,” I'll say that too.</p>
-    <div class="cta">
-      <a class="btn btn-primary" href="mailto:faresrafat3@gmail.com?subject=Free%2020-min%20call">Book a free 20-min call</a>
-      <a class="btn btn-ghost" href="https://github.com/faresrafat3">GitHub profile</a>
-    </div>
-  </div>
-</div></section>
-
-<footer><div class="wrap">
-  <div>© 2026 Fares Rafat · Cairo, Egypt</div>
-  <div class="social">
-    <a href="https://github.com/faresrafat3">GitHub</a>
-    <a href="https://www.linkedin.com/in/faresrafat3">LinkedIn</a>
-    <a href="mailto:faresrafat3@gmail.com">Email</a>
-  </div>
-</div></footer>
 </main>
+
+<footer>
+  <div class="sheet">
+    <div>Fares Rafat, Cairo — © 2026</div>
+    <div class="links">
+      <a href="https://github.com/faresrafat3">GitHub</a>
+      <a href="https://www.linkedin.com/in/faresrafat3">LinkedIn</a>
+      <a href="mailto:faresrafat3@gmail.com">Email</a>
+    </div>
+  </div>
+</footer>
 
 </body>
 </html>

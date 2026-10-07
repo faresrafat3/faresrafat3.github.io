@@ -87,19 +87,33 @@ for (const file of SURFACES) {
     stale.push(`${file}: missing`);
     continue;
   }
-  readFileSync(path, "utf8")
-    .split("\n")
-    .forEach((line, i) => {
-      // A line that names a project must not carry a count that project
-      // disagrees with. A line naming none is left to the numbers below.
-      const owner = Object.keys(PROJECTS).find((name) => line.includes(name));
-      const expected = owner ? measured[owner] : null;
-      for (const [, count] of line.matchAll(CLAIM)) {
-        if (expected !== null && Number(count) !== expected) {
-          stale.push(`${file}:${i + 1} claims ${count} tests for ${owner}, which produces ${expected}`);
-        }
+  const lines = readFileSync(path, "utf8").split("\n");
+  // A transcript is machine output, so a count inside one belongs to the
+  // project named in that block — not to whichever project happens to share
+  // the line. <pre> is the only place this page quotes output verbatim.
+  let transcriptOwner = null;
+  let inTranscript = false;
+  lines.forEach((line, i) => {
+    const opens = !inTranscript && /<pre\b/.test(line);
+    const closes = /<\/pre>/.test(line);
+    if (opens || inTranscript) {
+      const named = Object.keys(PROJECTS).find((name) => line.includes(name));
+      if (named && !transcriptOwner) transcriptOwner = named;
+    }
+    const owner = transcriptOwner ?? Object.keys(PROJECTS).find((name) => line.includes(name));
+    const expected = owner ? measured[owner] : null;
+    for (const [, count] of line.matchAll(CLAIM)) {
+      if (expected !== null && Number(count) !== expected) {
+        stale.push(`${file}:${i + 1} claims ${count} tests for ${owner}, which produces ${expected}`);
       }
-    });
+    }
+    if (closes) {
+      inTranscript = false;
+      transcriptOwner = null;
+    } else if (opens) {
+      inTranscript = true;
+    }
+  });
 }
 
 if (stale.length > 0) {

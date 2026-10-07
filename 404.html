@@ -1,61 +1,69 @@
 <!doctype html>
-<html lang="en" data-theme="blueprint">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Page not found — Fares Rafat</title>
-<meta name="description" content="That page does not exist. The work, the pricing and the contact details are one click away." />
+<meta name="description" content="That address has no page behind it. The work, the fees and the contact details are one click away." />
 <meta name="robots" content="noindex" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2307090d'/%3E%3Cpath d='M8 21 L14 11 L20 21' fill='none' stroke='%234ade80' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M21 21 L25 13' fill='none' stroke='%234ade80' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2315181B'/%3E%3Crect x='7.5' y='7.5' width='17' height='17' fill='none' stroke='%23E8EAE4' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23A33B26'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#07090d; --panel:#0d1117; --line:#1c2635; --txt:#e6edf6; --dim:#8b98ab;
-    --accent:#4ade80; --accent2:#38bdf8;
+    --paper:#E8EAE4; --ink:#15181B; --ink-2:#4A5157; --rule:#C4C9BF; --seal:#A33B26;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
   }
-  *{box-sizing:border-box;margin:0;padding:0}
+  *,*::before,*::after{box-sizing:border-box}
+  a{color:inherit;text-decoration:none}
   body{
-    background:
-      radial-gradient(1100px 500px at 80% -10%, rgba(56,189,248,.10), transparent 60%),
-      radial-gradient(900px 420px at 10% 0%, rgba(74,222,128,.08), transparent 60%),
-      var(--bg);
-    color:var(--txt); font-family:Inter,system-ui,sans-serif; line-height:1.6; min-height:100dvh;
-    display:grid; place-items:center; padding:32px 24px;
+    margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.62 var(--sans);
+    -webkit-font-smoothing:antialiased;min-height:100dvh;display:flex;flex-direction:column;
   }
-  main{max-width:620px;width:100%}
-  .code{font:600 13px/1 ui-monospace,Menlo,monospace;color:var(--accent);
-    border:1px solid rgba(74,222,128,.25);background:rgba(74,222,128,.08);
-    padding:6px 12px;border-radius:999px;display:inline-block;margin-bottom:22px}
-  h1{font-size:clamp(30px,6vw,46px);line-height:1.1;letter-spacing:-.03em;font-weight:800;margin-bottom:16px}
-  h1 em{font-style:normal;color:var(--accent)}
-  p{color:var(--dim);font-size:16.5px;margin-bottom:12px}
-  p strong{color:var(--txt);font-weight:600}
-  .links{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
-  a{color:var(--accent2);text-decoration:none}
-  a:hover{text-decoration:underline}
-  a:focus-visible{outline:2px solid var(--accent2);outline-offset:3px;border-radius:4px}
-  .btn{display:inline-block;padding:12px 22px;border-radius:10px;font-weight:600;font-size:15px;
-    border:1px solid var(--line);background:var(--panel);color:var(--txt);transition:transform .12s ease}
-  .btn:hover{text-decoration:none;transform:translateY(-1px);border-color:var(--accent2)}
-  .btn-primary{background:var(--accent);color:#06240f;border-color:transparent}
-  @media (prefers-reduced-motion: reduce){ .btn:hover{transform:none} *{transition:none !important} }
+  main{max-width:var(--measure,1120px);width:100%;margin:0 auto;padding:12vh 28px 0;flex:1}
+  .code{font:500 13px/1 var(--mono);color:var(--seal);border:1px solid var(--seal);
+    display:inline-block;padding:7px 11px;margin-bottom:26px}
+  h1{font-size:clamp(30px,5vw,44px);line-height:1.1;letter-spacing:-.026em;font-weight:600;
+    margin:0 0 20px;max-width:20ch}
+  p{max-width:56ch;color:var(--ink-2);margin:0 0 16px}
+  p strong{color:var(--ink);font-weight:500}
+  .acts{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px}
+  .btn{display:inline-block;padding:13px 24px;font-size:16px;font-weight:500;border:1px solid var(--ink);
+    transition:background .14s ease,color .14s ease}
+  .btn-solid{background:var(--ink);color:var(--paper)}
+  .btn-solid:hover{background:var(--seal);border-color:var(--seal)}
+  .btn-line:hover{background:var(--ink);color:var(--paper)}
+  footer{border-top:1px solid var(--rule);margin-top:12vh}
+  footer div{max-width:1120px;margin:0 auto;padding:24px 28px 40px;font-size:15px;color:var(--ink-2);
+    display:flex;gap:20px;flex-wrap:wrap}
+  footer a{border-bottom:1px solid var(--rule)}
+  footer a:hover{color:var(--ink)}
+  :focus-visible{outline:2px solid var(--seal);outline-offset:3px}
+  @media (prefers-reduced-motion:reduce){ .btn{transition:none} }
 </style>
 </head>
 <body>
+
 <main>
-  <div class="code">404</div>
-  <h1>This page was never <em>committed</em>.</h1>
-  <p>The kernel refuses unverified transitions, and so does this site: a URL that
-  never existed is not quietly redirected to something else.</p>
+  <div class="code">404 — no such page</div>
+  <h1>This address was never committed.</h1>
+  <p>The kernel refuses unverified transitions, and so does this site: a page that
+  does not exist is not quietly redirected to something else.</p>
   <p><strong>Two things worth your time:</strong> the work I have shipped, and
   twenty minutes to tell me whether I can help with your agent pipeline.</p>
-  <div class="links">
-    <a class="btn btn-primary" href="/">Back to the home page</a>
-    <a class="btn" href="/colony-kernel/">colony-kernel — the kernel demo</a>
-    <a class="btn" href="mailto:faresrafat3@gmail.com">faresrafat3@gmail.com</a>
+  <div class="acts">
+    <a class="btn btn-solid" href="/">Back to the home page</a>
+    <a class="btn btn-line" href="/colony-kernel/">Run the colony-kernel demo</a>
+    <a class="btn btn-line" href="mailto:faresrafat3@gmail.com">faresrafat3@gmail.com</a>
   </div>
 </main>
+
+<footer><div>
+  <a href="https://github.com/faresrafat3">GitHub</a>
+  <a href="mailto:faresrafat3@gmail.com">Email</a>
+</div></footer>
+
 </body>
 </html>

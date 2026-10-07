@@ -39,6 +39,29 @@ ran 117 and 82. Both numbers were true once and nothing noticed when they
 stopped being true, because a number copied into a sales page is a copy of a
 fact another repository owns.
 
+## Design system
+
+One home, in the `:root` block of `index.html`. Change a token there, never a
+value inline, and never only on one page — `404.html` repeats the same palette
+and type deliberately.
+
+| Token | Value | Used for |
+|---|---|---|
+| `--paper` / `--sheet` | `#E8EAE4` | The page, and raised blocks |
+| `--ink` / `--ink-2` | `#15181B` / `#4A5157` | Prose and secondary prose |
+| `--rule` / `--rule-soft` | `#C4C9BF` / `#D6DAD1` | Hairlines; there are no shadows |
+| `--seal` | `#A33B26` | The single accent: primary action, transcript edge, recommended row |
+
+- Type: IBM Plex Sans for all prose, IBM Plex Mono **only** for machine output,
+  figures and table headers. Mono is a signal that something is literal.
+- Layout: `.sheet` and `.band` share one measure rule. A section that sets its
+  own width drifts — that is how the rail ended up outside the container once.
+- The transcript in the first band is the one dark object on the page. Keep it
+  the only one, and keep it a real capture: `check-claims.mjs` reads `<pre>`
+  blocks and attributes their counts to the project named inside them.
+- No gradients, no pill badges, no uppercase eyebrows, no `·` meta strings, no
+  `→` on link text. Those were the page's previous defaults.
+
 ## Rules
 
 - `node check-claims.mjs` green before every push.
