@@ -1,4 +1,4 @@
-# AGENTS.md — the boot contract for faresrafat3.github.io
+# AGENTS.md, the boot contract for faresrafat3.github.io
 
 This repo is the services page. It is small on purpose: one page, one 404, one
 image, one gate. Opening it? Read this file first.
@@ -7,9 +7,9 @@ image, one gate. Opening it? Read this file first.
 
 | Path | What it is | May you touch it? |
 |---|---|---|
-| `index.html` | The services page — the only page here | Yes — keep the gate green |
+| `index.html` | The services page, the only page here | Yes, keep the gate green |
 | `404.html` | Branded not-found page | Yes |
-| `og.png` | Social card (1200×630) | Yes — regenerate both meta and image together |
+| `og.png` | Social card (1200×630) | Yes, regenerate both meta and image together |
 | `check-claims.mjs` | Gate: advertised test counts must be measured | Yes |
 | `robots.txt`, `.nojekyll` | Pages config | Rarely |
 
@@ -17,7 +17,7 @@ image, one gate. Opening it? Read this file first.
 
 `/colony-kernel/` is served by the **colony-kernel repo's own `gh-pages`
 branch**, not from here. A copy used to live in this repo and it was never
-served — a project page outranks the user-site directory at the same path.
+served, a project page outranks the user-site directory at the same path.
 Keeping it was a trap: it looked authoritative, it drifted, and nobody could
 tell which file a visitor was reading. Do not re-add it. The canonical source
 is `~/Projects/colony-kernel/docs/site/index.html`, published by that repo's
@@ -42,7 +42,7 @@ fact another repository owns.
 ## Design system
 
 One home, in the `:root` block of `index.html`. Change a token there, never a
-value inline, and never only on one page — `404.html` repeats the same palette
+value inline, and never only on one page, `404.html` repeats the same palette
 and type deliberately.
 
 | Token | Value | Used for |
@@ -55,7 +55,7 @@ and type deliberately.
 - Type: IBM Plex Sans for all prose, IBM Plex Mono **only** for machine output,
   figures and table headers. Mono is a signal that something is literal.
 - Layout: `.sheet` and `.band` share one measure rule. A section that sets its
-  own width drifts — that is how the rail ended up outside the container once.
+  own width drifts, that is how the rail ended up outside the container once.
 - The transcript in the first band is the one dark object on the page. Keep it
   the only one, and keep it a real capture: `check-claims.mjs` reads `<pre>`
   blocks and attributes their counts to the project named inside them.
@@ -73,5 +73,5 @@ and type deliberately.
 
 ## Publishing
 
-GitHub Pages builds `main` automatically. There is no deploy script here —
+GitHub Pages builds `main` automatically. There is no deploy script here,
 commit, push, then read the live page back before claiming a change shipped.
